@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enterprise IT HelpDesk</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<header>
+    <div>
+        <h1>Enterprise IT HelpDesk</h1>
+        <p>Smart IT Support & Ticket Management</p>
+    </div>
+
+    <a href="/dashboard" class="dashboard-btn">
+        Admin Dashboard
+    </a>
+</header>
+
+<main>
+
+    <section class="hero">
+        <h2>How can we help you?</h2>
+
+        <p>
+            Describe your IT issue and receive an automated
+            category and troubleshooting recommendation.
+        </p>
+    </section>
+
+
+    <section class="card">
+
+        <form action="/analyze" method="POST">
+
+            <label>Employee Name</label>
+
+            <input
+                type="text"
+                name="employee_name"
+                placeholder="Enter your name"
+                required
+                value="{{ employee_name or '' }}"
+            >
+
+
+            <label>Describe Your Issue</label>
+
+            <textarea
+                name="issue"
+                placeholder="Example: My laptop cannot connect to WiFi..."
+                required
+            >{{ issue or '' }}</textarea>
+
+
+            <button type="submit">
+                Analyze Issue
+            </button>
+
+        </form>
+
+    </section>
+
+
+    {% if analyzed %}
+
+    <section class="analysis-card">
+
+        <div class="analysis-header">
+
+            <h2>Issue Analysis</h2>
+
+            <span class="badge">
+                {{ category }}
+            </span>
+
+        </div>
+
+
+        <div class="details">
+
+            <div>
+                <strong>Category</strong>
+                <p>{{ category }}</p>
+            </div>
+
+            <div>
+                <strong>Priority</strong>
+                <p>{{ priority }}</p>
+            </div>
+
+        </div>
+
+
+        <div class="solution">
+
+            <h3>Recommended Solution</h3>
+
+            <p>
+                {{ solution }}
+            </p>
+
+        </div>
+
+
+        <form action="/create_ticket" method="POST">
+
+            <input
+                type="hidden"
+                name="employee_name"
+                value="{{ employee_name }}"
+            >
+
+            <input
+                type="hidden"
+                name="issue"
+                value="{{ issue }}"
+            >
+
+            <input
+                type="hidden"
+                name="category"
+                value="{{ category }}"
+            >
+
+            <input
+                type="hidden"
+                name="priority"
+                value="{{ priority }}"
+            >
+
+            <input
+                type="hidden"
+                name="solution"
+                value="{{ solution }}"
+            >
+
+            <button type="submit">
+                Create Support Ticket
+            </button>
+
+        </form>
+
+    </section>
+
+    {% endif %}
+
+</main>
+
+</body>
+
+</html>

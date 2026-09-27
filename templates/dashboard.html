@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>HelpDesk Dashboard</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+
+<body>
+
+<header>
+
+    <div>
+
+        <h1>Enterprise HelpDesk</h1>
+
+        <p>Support Management Dashboard</p>
+
+    </div>
+
+    <a href="/" class="dashboard-btn">
+        Report Issue
+    </a>
+
+</header>
+
+
+<main>
+
+    <section class="stats">
+
+        <div class="stat-card">
+
+            <h3>Total Tickets</h3>
+
+            <strong>{{ total }}</strong>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <h3>Open</h3>
+
+            <strong>{{ open_tickets }}</strong>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <h3>Resolved</h3>
+
+            <strong>{{ resolved }}</strong>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <h3>High Priority</h3>
+
+            <strong>{{ high_priority }}</strong>
+
+        </div>
+
+    </section>
+
+
+    <section class="ticket-card">
+
+        <h2>Support Tickets</h2>
+
+
+        {% if tickets %}
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>ID</th>
+                        <th>Employee</th>
+                        <th>Issue</th>
+                        <th>Category</th>
+                        <th>Priority</th>
+                        <th>Status</th>
+                        <th>Action</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for ticket in tickets %}
+
+                    <tr>
+
+                        <td>
+                            HD-{{ "%04d"|format(ticket.id) }}
+                        </td>
+
+                        <td>
+                            {{ ticket.employee_name }}
+                        </td>
+
+                        <td>
+                            {{ ticket.issue }}
+                        </td>
+
+                        <td>
+                            {{ ticket.category }}
+                        </td>
+
+                        <td>
+                            {{ ticket.priority }}
+                        </td>
+
+                        <td>
+                            {{ ticket.status }}
+                        </td>
+
+                        <td>
+
+                            {% if ticket.status == "Open" %}
+
+                            <a class="resolve-btn"
+                               href="/resolve/{{ ticket.id }}">
+                                Resolve
+                            </a>
+
+                            {% else %}
+
+                            Completed
+
+                            {% endif %}
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        {% else %}
+
+        <p class="empty">
+            No support tickets have been created yet.
+        </p>
+
+        {% endif %}
+
+    </section>
+
+</main>
+
+</body>
+
+</html>
