@@ -87,8 +87,7 @@ def analyze_issue(issue):
     else:
         priority = "Low"
 
-    return category, priority, solutions[category]
-
+    return category, confidence, priority, solutions[category]
 # ---------------- HOME PAGE ----------------
 
 @app.route("/")
@@ -102,17 +101,18 @@ def analyze():
     employee_name = request.form["employee_name"]
     issue = request.form["issue"]
 
-    category, priority, solution = analyze_issue(issue)
+    category, confidence, priority, solution = analyze_issue(issue)
     
     return render_template(
-        "index.html",
-        employee_name=employee_name,
-        issue=issue,
-        category=category,
-        priority=priority,
-        solution=solution,
-        analyzed=True
-    )
+    "index.html",
+    employee_name=employee_name,
+    issue=issue,
+    category=category,
+    confidence=confidence,
+    priority=priority,
+    solution=solution,
+    analyzed=True
+)
 
 
 # ---------------- CREATE TICKET ----------------

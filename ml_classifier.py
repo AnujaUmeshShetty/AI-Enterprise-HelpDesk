@@ -2,7 +2,8 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 
 
-# Training examples
+# ---------------- TRAINING DATA ----------------
+
 issues = [
 
     # NETWORK
@@ -18,6 +19,19 @@ issues = [
     "cannot connect to office network",
     "network connection error",
     "internet keeps disconnecting",
+    "office wifi is not connecting",
+    "company network is unavailable",
+    "my laptop has no internet",
+    "unable to connect to corporate wifi",
+    "internet connection stopped working",
+    "vpn connection keeps failing",
+    "network keeps disconnecting",
+    "office internet is unavailable",
+    "cannot access the internet",
+    "wifi connection failed",
+    "network access is not working",
+    "internet is disconnected",
+    "unable to connect to wifi",
 
     # ACCESS / LOGIN
     "forgot my password",
@@ -32,6 +46,18 @@ issues = [
     "employee account access problem",
     "login credentials are not working",
     "access denied to my account",
+    "forgot login password",
+    "account is locked",
+    "cannot sign into my account",
+    "unable to access employee account",
+    "password is not accepted",
+    "login credentials failed",
+    "cannot access company account",
+    "my account access is blocked",
+    "sign in is not working",
+    "unable to login",
+    "password reset failed",
+    "employee login problem",
 
     # HARDWARE
     "laptop is not turning on",
@@ -46,6 +72,18 @@ issues = [
     "keyboard keys are not responding",
     "computer is overheating",
     "monitor is not connecting",
+    "laptop will not start",
+    "computer is not powering on",
+    "mouse is not responding",
+    "printer cannot print",
+    "monitor is blank",
+    "laptop screen is damaged",
+    "battery is not charging",
+    "keyboard is broken",
+    "printer hardware problem",
+    "computer is overheating",
+    "external monitor is not working",
+    "laptop hardware issue",
 
     # SOFTWARE
     "application is crashing",
@@ -60,49 +98,45 @@ issues = [
     "program is not responding",
     "software keeps crashing",
     "cannot install the application",
+    "application keeps crashing",
+    "program will not open",
+    "software is running slowly",
+    "application is frozen",
+    "application stopped working",
+    "software installation error",
+    "application update failed",
+    "program is showing an error",
+    "cannot open the software",
+    "software is not responding",
+    "application installation failed",
+    "program keeps crashing",
 
     # OTHER
+
     "I need technical support",
-    "I need help with an IT issue",
-    "there is a technical problem",
-    "I have another IT problem",
-    "I need IT assistance",
-    "technical support is required",
-    "I need help with my computer",
-    "please help with an IT problem"
+    "I need IT support",
+    "I need general IT assistance",
+    "I have a general IT question",
+    "I need help from IT support",
+    "please contact IT support",
+    "I want to raise an IT support request",
+    "I need assistance from the IT team",
+    "I have a general technical question",
+    "please help me with an IT request",
+    "I need help with an IT service",
+    "I want to contact the IT helpdesk"
 ]
 
+categories = (
+    ["Network"] * 25
+    + ["Access / Login"] * 24
+    + ["Hardware"] * 24
+    + ["Software"] * 24
+    + ["Other"] * 12
+)
 
-categories = [
+# ---------------- TEXT VECTORIZATION ----------------
 
-    # NETWORK
-    "Network", "Network", "Network", "Network",
-    "Network", "Network", "Network", "Network",
-    "Network", "Network", "Network", "Network",
-
-    # ACCESS / LOGIN
-    "Access / Login", "Access / Login", "Access / Login",
-    "Access / Login", "Access / Login", "Access / Login",
-    "Access / Login", "Access / Login", "Access / Login",
-    "Access / Login", "Access / Login", "Access / Login",
-
-    # HARDWARE
-    "Hardware", "Hardware", "Hardware", "Hardware",
-    "Hardware", "Hardware", "Hardware", "Hardware",
-    "Hardware", "Hardware", "Hardware", "Hardware",
-
-    # SOFTWARE
-    "Software", "Software", "Software", "Software",
-    "Software", "Software", "Software", "Software",
-    "Software", "Software", "Software", "Software",
-
-    # OTHER
-    "Other", "Other", "Other", "Other",
-    "Other", "Other", "Other", "Other"
-]
-
-
-# TF-IDF converts text into numerical features
 vectorizer = TfidfVectorizer(
     lowercase=True,
     stop_words="english",
@@ -112,13 +146,16 @@ vectorizer = TfidfVectorizer(
 X = vectorizer.fit_transform(issues)
 
 
-# Train the classifier
+# ---------------- TRAIN MODEL ----------------
+
 model = LogisticRegression(
     max_iter=1000
 )
 
 model.fit(X, categories)
 
+
+# ---------------- PREDICTION ----------------
 
 def predict_category(issue):
 
@@ -135,7 +172,8 @@ def predict_category(issue):
     return prediction, confidence
 
 
-# Test the model
+# ---------------- TEST MODEL ----------------
+
 if __name__ == "__main__":
 
     test_issues = [
@@ -150,16 +188,7 @@ if __name__ == "__main__":
 
         category, confidence = predict_category(issue)
 
-        print(
-            f"Issue: {issue}"
-        )
-
-        print(
-            f"Category: {category}"
-        )
-
-        print(
-            f"Confidence: {confidence}%"
-        )
-
+        print(f"Issue: {issue}")
+        print(f"Category: {category}")
+        print(f"Confidence: {confidence}%")
         print("-" * 50)
